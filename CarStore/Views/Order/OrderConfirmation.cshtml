@@ -1,0 +1,33 @@
+﻿
+@model CarStore.Models.Order
+
+<h2>Twoje zamówienie zostalo złożone!</h2>
+
+<p>Numer zamówienia: @Model.Id</p>
+<p>Data zamówienia: @Model.OrderPlaced.ToString("MM/dd/yyyy")</p>
+<p>Całkowita cena: @Model.OrderTotal.ToString("C")</p>
+
+<h4>Szczegóły zamówienia:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Zdjęcie</th>
+            <th>Marka</th>
+            <th>Model</th>
+            <th>Ilość</th>
+            <th>Cena od 1 sztuki</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td><img src="@item.Car.ImageUrl"  width="100" /></td>
+                <td>@item.Car.Brand</td>
+                <td>@item.Car.Model</td>
+                <td>@item.Quantity</td>
+                <td>@item.Car.Price.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CarStore.Models.BasketItem>
+
+<h2>Koszyk zakupów</h2>
+
+<!-- wyswietlanie aut oraz danych ponizej zawartych z modeli -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Zdjęcie</th>
+            <th>Marka</th>
+            <th>Model</th>
+            <th>Cena</th>
+            <th>Ilość</th>
+            <th>Razem</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><img src="@item.Car.ImageUrl" width="100" /></td>
+                <td>@item.Car.Brand</td>
+                <td>@item.Car.Model</td>
+                <td>@item.Car.Price.ToString("c")</td>  
+                <td>@item.Quantity</td>
+                <td>@((item.Quantity * item.Car.Price).ToString("c"))</td>
+                <td>
+                    <form asp-controller="Basket" asp-action="IncreaseQuantity" method="post">
+                        <input type="hidden" name="id" value="@item.CarId" />
+                        <button type="submit" class="btn btn-sm btn-success">Dodaj 1</button>
+                    </form>
+                    <form asp-controller="Basket" asp-action="ReduceQuantity" method="post">
+                        <input type="hidden" name="id" value="@item.CarId" />
+                        <button type="submit" class="btn btn-sm btn-warning">Usuń 1</button>
+                    </form>
+                    <form asp-controller="Basket" asp-action="RemoveFromBasket" method="post">
+                        <input type="hidden" name="id" value="@item.CarId" />
+                        <button type="submit" class="btn btn-sm btn-danger">Usuń wszystkie z modelu</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Suma: </strong>@ViewBag.TotalPrice.ToString("c")</p>
+
+<!-- idz do checkout -->
+<form asp-controller="Order" asp-action="Checkout" method="get">
+    <button type="submit" class="btn btn-primary">Złóż zamówienie</button>
+</form>
+
+<!-- usun wszystko (lepiej nie) -->
+<form asp-controller="Basket" asp-action="ClearBasket" method="post">
+    <button type="submit" class="btn btn-danger">Opróżnij koszyk</button>
+</form>

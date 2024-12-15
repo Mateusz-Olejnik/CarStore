@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CarStore.Models.Car>
+
+@{
+    ViewData["Title"] = "Store";
+}
+
+<h2 class="my-4">Sklep</h2>
+
+<!-- filtry ceny, marki -->
+<form method="get" class="mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="brandFilter" placeholder="Filtr przez markę (np. Honda)" value="@Context.Request.Query["brandFilter"]" />
+        </div>
+        <div class="col-md-3">
+            <input type="number" class="form-control" name="minPrice" placeholder="Min Cena" value="@Context.Request.Query["minPrice"]" />
+        </div>
+        <div class="col-md-3">
+            <input type="number" class="form-control" name="maxPrice" placeholder="Max Cena" value="@Context.Request.Query["maxPrice"]" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Filtruj</button>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    @foreach (var car in Model)
+    {
+        <div class="col-3">
+            <div class="card my-3 store-card">
+                <a class="a-cleanup" asp-controller="Store" asp-action="Details" asp-route-id="@car.Id">
+                    <img src="@car.ImageUrl" class="card-img-top card-img-custom" />
+                    <div class="card-body" style="height: 6em;">
+                        <h5 class="mb-3">@car.Model, @car.Brand</h5>
+                        <h6 class="mb-4">@car.Description</h6>
+                    </div>
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <span class="card-text">@car.Price.ToString("c")</span>
+                        <form asp-controller="Basket" asp-action="AddToBasket" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@car.Id" />
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-cart-shopping"></i> Dodaj do koszyka
+                            </button>
+                        </form>
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+</div>

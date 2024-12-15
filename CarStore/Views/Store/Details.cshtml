@@ -1,0 +1,30 @@
+﻿@model CarStore.Models.Car
+
+@{
+    ViewData["Title"] = "Car Details";
+}
+
+<h2>@Model.Brand @Model.Model</h2>
+
+<div>
+    <img src="@Model.ImageUrl" alt="@Model.Model" class="img-fluid" />
+</div>
+
+<div>
+    <h4>Opis samochodu:</h4>
+    <p>@Model.Description</p>
+</div>
+
+<div>
+    <h4>Cena: @Model.Price.ToString("c")</h4>
+</div>
+
+<div>
+    <form asp-controller="Basket" asp-action="AddToBasket" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-cart-shopping"></i> Dodaj do koszyka
+        </button>
+    </form>
+</div>

@@ -1,0 +1,38 @@
+﻿@model CarStore.Models.CheckoutViewModel
+
+<h2>Podsumowanie</h2>
+
+<form asp-controller="Order" asp-action="PlaceOrder" method="post">
+    <div>
+        <h5>Twoje samochody</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Zdjęcie</th>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Ilość</th>
+                    <th>Cena/1szt</th>
+                    <th>Suma</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.BasketItems)
+                {
+                    <tr>
+                        <td><img src="@item.Car.ImageUrl" width="100" /></td>
+                        <td>@item.Car.Brand</td>
+                        <td>@item.Car.Model</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Car.Price.ToString("C")</td>
+                        <td>@((item.Quantity * item.Car.Price).ToString("c"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <h4>Suma: @Model.TotalPrice.ToString("C")</h4>
+
+    <button type="submit" class="btn btn-success">Złóż zamówienie</button>
+</form>
